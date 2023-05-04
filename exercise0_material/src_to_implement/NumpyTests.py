@@ -71,12 +71,12 @@ class TestCircle(unittest.TestCase):
         circ = c.draw()
         iou = self._IoU(circ, self.reference_img)
         self.assertAlmostEqual(iou, 1.0, 2, msg="Possible errors: "
-                                                "1. np.meshgrid creates meshgrid similar to a "
-                                                "coordinate system. In x direction the values rise from left"
-                                                "to right and in y direction the values rise from top to bottom"
-                                                "(NOT bottom to top)."
-                                                "\n 2. The desired output is a boolean array and not a binary "
-                                                "array.")
+                               "1. np.meshgrid creates meshgrid similar to a "
+                               "coordinate system. In x direction the values rise from left"
+                               "to right and in y direction the values rise from top to bottom"
+                               "(NOT bottom to top)."
+                               "\n 2. The desired output is a boolean array and not a binary "
+                               "array.")
 
     def testPatternDifferentSize(self):
         # Creates an image of a circle with resolution 512x512 a radius of 20 with a center at
