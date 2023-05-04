@@ -21,6 +21,7 @@ class TestCheckers(unittest.TestCase):
         import pattern
         c = pattern.Checker(250, 25)
         c.draw()
+
         np.testing.assert_almost_equal(c.output, self.reference_img, err_msg="Check if your pattern starts with a"
                                                                              "black tile in the upper left corner.")
 
@@ -129,9 +130,9 @@ class TestSpectrum(unittest.TestCase):
                                        self.reference_img,
                                        decimal=2,
                                        err_msg="Have a close look at corners of the spectrum in the Description.pdf "
-                                           "file: Which colors are the strongest in which corners? Try to create"
-                                           " one channel first and then the others based on that one. It is useful"
-                                           " to use np.meshgrid here again.")
+                                       "file: Which colors are the strongest in which corners? Try to create"
+                                       " one channel first and then the others based on that one. It is useful"
+                                       " to use np.meshgrid here again.")
 
     def testPatternDifferentSize(self):
         # Creates an RGB spectrum with resolution 100x100x3 and compares it to the reference image
@@ -142,10 +143,9 @@ class TestSpectrum(unittest.TestCase):
                                        self.reference_img2,
                                        decimal=2,
                                        err_msg="Have a close look at corners of the spectrum in the Description.pdf "
-                                           "file: Which colors are the strongest in which corners? Try to create"
-                                           " one channel first and then the others based on that one. It is useful"
-                                           " to use np.meshgrid here again.")
-
+                                       "file: Which colors are the strongest in which corners? Try to create"
+                                       " one channel first and then the others based on that one. It is useful"
+                                       " to use np.meshgrid here again.")
 
     def testReturnCopy(self):
         # Checks whether the output of the pattern is a copy of the
@@ -178,9 +178,9 @@ class TestGen(unittest.TestCase):
         gen2 = ImageGenerator(self.file_path, self.label_path, 12, [32, 32, 3], rotation=False, mirroring=False,
                               shuffle=False)
         np.testing.assert_almost_equal(gen.next()[0], gen2.next()[0], err_msg="Possible error: Maybe the data is already "
-                                                                      "shuffled during initialization.")
+                                       "shuffled during initialization.")
         np.testing.assert_almost_equal(gen.next()[1], gen2.next()[1], err_msg="Possible error: Maybe the lables are already "
-                                                                      "shuffled during initialization.")
+                                       "shuffled during initialization.")
 
     def testDuplicate(self):
         # Image Generator without overlapping batches.
@@ -219,12 +219,12 @@ class TestGen(unittest.TestCase):
         np.testing.assert_almost_equal(b1[:20], b2[40:])
         b1 = gen2.next()[0]
         b2 = gen2.next()[0]
-        np.testing.assert_almost_equal(b1[:66], b2[17:], err_msg= "Possible error: The generator does not reuse the first "
-                                                         "elements of the first batch in case of overlapping batches"
-                                                         ". Please make sure to reuse the first elements in the first"
-                                                         "batch.")
+        np.testing.assert_almost_equal(b1[:66], b2[17:], err_msg="Possible error: The generator does not reuse the first "
+                                       "elements of the first batch in case of overlapping batches"
+                                       ". Please make sure to reuse the first elements in the first"
+                                       "batch.")
         self.assertFalse(b1[65] is b2[-1], msg="Possible error: The overlapping elements point to the same object. Please"
-                                           "make sure that the elements are copied. ")  # Check if it is a shared object
+                         "make sure that the elements are copied. ")  # Check if it is a shared object
 
     def testShuffle(self):
         # Creates two image generator objects.
@@ -287,19 +287,25 @@ class TestGen(unittest.TestCase):
                                 shuffle=False).next()[0]
 
         # determine the images which were augmented
-        augmented_images_indices = np.sum(np.abs(batch1 - batch2), axis=(1, 2, 3)).astype(np.bool_)
+        augmented_images_indices = np.sum(
+            np.abs(batch1 - batch2), axis=(1, 2, 3)).astype(np.bool_)
 
         # extract corner points for each sample and reduce augmented to one characateristic row
         # this row is also inverted for simpler computations
-        augmented_corners = self._get_corner_points(batch2[augmented_images_indices])
+        augmented_corners = self._get_corner_points(
+            batch2[augmented_images_indices])
         characteristic_corners = augmented_corners[:, 0, ::-1]
-        original_corners = self._get_corner_points(batch1[augmented_images_indices])
+        original_corners = self._get_corner_points(
+            batch1[augmented_images_indices])
 
         # subtract characteristic corners to original corners. after summing spacial and channel dimensions, 0 are expected
         # e.g. if sample 2 is rotated by 90, we have a 0 in rot1 at the 2nd posistion see similiar to testMirroring
-        rot1 = np.sum(original_corners[:, :, 0] - characteristic_corners, axis=(1, 2))
-        rot2 = np.sum(original_corners[:, 1, :] - characteristic_corners, axis=(1, 2))
-        rot3 = np.sum(original_corners[:, ::-1, 1] - characteristic_corners, axis=(1, 2))
+        rot1 = np.sum(original_corners[:, :, 0] -
+                      characteristic_corners, axis=(1, 2))
+        rot2 = np.sum(original_corners[:, 1, :] -
+                      characteristic_corners, axis=(1, 2))
+        rot3 = np.sum(original_corners[:, ::-1, 1] -
+                      characteristic_corners, axis=(1, 2))
 
         # assumption is that augmented images are either rotated by 90 (rot1), 180 (ro2) or 270 (rot3) degrees, thus
         # their elementwise product must be zero
@@ -325,30 +331,36 @@ class TestGen(unittest.TestCase):
                                 shuffle=False).next()[0]
 
         # determine the images which were augmented
-        augmented_images_indices = np.sum(np.abs(batch1 - batch2), axis=(1, 2, 3)).astype(np.bool_)
+        augmented_images_indices = np.sum(
+            np.abs(batch1 - batch2), axis=(1, 2, 3)).astype(np.bool_)
 
         # extract corner points for each sample
-        augmented_corners = self._get_corner_points(batch2[augmented_images_indices])
-        original_corners = self._get_corner_points(batch1[augmented_images_indices])
+        augmented_corners = self._get_corner_points(
+            batch2[augmented_images_indices])
+        original_corners = self._get_corner_points(
+            batch1[augmented_images_indices])
 
         # pick vertical ref points and compare them with opposites in original corners
         # compute then the diff and sum over vertical axis and channels. those images which were flipped vertically
         # contain now zeros
         vertical_augmented_corners = augmented_corners[:, :, 0]
-        vertical = np.sum(original_corners[:, :, 1, :] - vertical_augmented_corners, axis=(1, 2))
+        vertical = np.sum(
+            original_corners[:, :, 1, :] - vertical_augmented_corners, axis=(1, 2))
 
         # pick horizontal ref points and compare them with opposites in original corners
         # compute then the diff and sum over horizontal axis and channels. those images which were flipped horizontally
         # contain now zeros
         horizontal_augmented_corners = augmented_corners[:, 0, :]
-        horizontal = np.sum(original_corners[:, 1, :, :] - horizontal_augmented_corners, axis=(1, 2))
+        horizontal = np.sum(
+            original_corners[:, 1, :, :] - horizontal_augmented_corners, axis=(1, 2))
 
         # pick top left corner and bottom right corner (diagonals are flipped if double mirror)
         vertical_horizontal_augmented_corners = np.stack(
             list(zip(augmented_corners[:, 0, 0, :], augmented_corners[:, 1, 1, :])))
         original_corner_diagonals = np.stack(
             list(zip(original_corners[:, 1, 1, :], original_corners[:, 0, 0, :])))
-        horizontal_vertical = np.sum(original_corner_diagonals - vertical_horizontal_augmented_corners, axis=(1, 2))
+        horizontal_vertical = np.sum(
+            original_corner_diagonals - vertical_horizontal_augmented_corners, axis=(1, 2))
 
         # the elementwise product of horizontal and vertical must be zero
         # since the images can only be augmented with vertical or horizontal mirroring
@@ -451,7 +463,8 @@ if __name__ == '__main__':
         table.append(["Ex0", "Total Achieved", "", "{} / 100 (%)".format(total_points),
                       "{:.3f} / 10 (%)".format(total_points * exam_percentage / 100)])
         print(tabulate.tabulate(table,
-                                headers=['Pos', 'Test', "Result", 'Percent in Exercise', 'Percent in Exam'],
+                                headers=['Pos', 'Test', "Result",
+                                         'Percent in Exercise', 'Percent in Exam'],
                                 tablefmt="github"))
     else:
         unittest.main(exit=False)
