@@ -33,6 +33,39 @@ class Checker:
         plt.show()
 
 
+# class Circle:
+#     def __init__(self, resolution=512, radius=100, center=None):
+#         self.resolution = resolution
+#         self.radius = radius
+#         self.center = center
+#         self.rad_sq = self.radius ** 2
+#         if center is None:
+#             self.center = (resolution//2, resolution//2)
+#         else:
+#             self.center = center
+#         self.output = np.zeros((resolution, resolution, 3), dtype=np.uint8)
+#         # x, y = np.indices((resolution, resolution))
+#
+#     def draw(self):
+#         x = np.arange(0, self.resolution)
+#         y = np.arange(0, self.resolution)
+#         xx, yy = np.meshgrid(x, y)
+#         # xx = xx[:,0]
+#         # yy = np.transpose(yy)
+#         # xx = np.transpose(xx)
+#         # yy = np.flip(yy)
+#         circle = (xx-self.center[0])**2 + (yy-self.center[1])**2
+#         # self.output = circle
+#         self.output = (circle < (
+#             self.rad_sq - self.center[0])) & (circle < (self.rad_sq - self.center[1]))
+#         self.output = self.output.astype(bool)
+#         #print (self.output)
+#         return self.output.copy()
+#
+#     def show(self):
+#         plt.imshow(self.output, cmap='gray')
+#         plt.gca().invert_yaxis()
+#         plt.show()
 class Circle:
     def __init__(self, resolution=512, radius=100, center=None):
         self.resolution = resolution
@@ -44,23 +77,58 @@ class Circle:
         else:
             self.center = center
         self.output = np.zeros((resolution, resolution, 3), dtype=np.uint8)
-        # x, y = np.indices((resolution, resolution))
 
     def draw(self):
-        x = np.arange(0, self.resolution, 1)
-        y = np.arange(0, self.resolution, 1)
-        xx, yy = np.meshgrid(x, y)
-        # xx = xx[:,0]
-        # yy = np.transpose(yy)
-        # xx = np.transpose(xx)
-        # yy = np.flip(yy)
+        x = np.arange(0, self.resolution)
+        y = np.arange(0, self.resolution)
+        xx, yy = np.meshgrid(x, y, indexing='xy')
         circle = (xx-self.center[0])**2 + (yy-self.center[1])**2
-        # self.output = circle
-        self.output = (circle < (
-            self.rad_sq - self.center[0])) & (circle < (self.rad_sq - self.center[1]))
-        self.output = self.output.astype(np.int64)
+        self.output = (circle < self.rad_sq).astype(bool)
         return self.output.copy()
 
     def show(self):
-        plt.imshow(self.output, cmap='gray')
+        plt.imshow(self.output, cmap='gray', origin='lower')
         plt.show()
+
+
+import numpy as np
+
+class Spectrum:
+    def __init__(self, resolution):
+        self.resolution = resolution
+        self.output = np.zeros((resolution, resolution, 3))
+
+    def draw(self):
+        x = np.arange(self.resolution)
+        y = np.arange(self.resolution)
+        xx, yy = np.meshgrid(x, y)
+
+        # Red channel
+        red = np.zeros((self.resolution, self.resolution))
+        red[:, :self.resolution//3] = np.linspace(0, 1, self.resolution)[:, np.newaxis]
+        red[:, self.resolution//3:self.resolution//2] = 1
+        red[:, self.resolution//2:] = np.linspace(1, 0, self.resolution)[:, np.newaxis]
+
+        # Green channel
+        green = np.zeros((self.resolution, self.resolution))
+        green[:self.resolution//3, :] = np.linspace(1, 0, self.resolution)[np.newaxis, :]
+        green[self.resolution//3:self.resolution//2, :] = 0
+        green[self.resolution//2:, :] = np.linspace(0, 1, self.resolution)[np.newaxis, :]
+
+        # Blue channel
+        blue = np.zeros((self.resolution, self.resolution))
+        blue[:self.resolution//2, :] = 0
+        blue[self.resolution//2:self.resolution//2+self.resolution//6, :] = np.linspace(0, 1, self.resolution)[np.newaxis, :]
+        blue[self.resolution//2+self.resolution//6:, :] = 1
+
+        self.output[:, :, 0] = red
+        self.output[:, :, 1] = green
+        self.output[:, :, 2] = blue
+
+        return self.output.copy()
+
+    def show(self):
+        plt.imshow(self.output)
+        plt.show()
+
+
