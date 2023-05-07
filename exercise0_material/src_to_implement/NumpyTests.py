@@ -181,6 +181,7 @@ class TestGen(unittest.TestCase):
                                        "shuffled during initialization.")
         np.testing.assert_almost_equal(gen.next()[1], gen2.next()[1], err_msg="Possible error: Maybe the lables are already "
                                        "shuffled during initialization.")
+        x = 6
 
     def testDuplicate(self):
         # Image Generator without overlapping batches.
