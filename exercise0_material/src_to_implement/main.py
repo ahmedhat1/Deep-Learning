@@ -16,11 +16,11 @@ from generator import ImageGenerator
 # circle.draw()
 # circle.show()
 
-# spectrum = Spectrum(255)
-# spectrum.draw()
-# spectrum.show()
-image_generator = ImageGenerator(
-    "./exercise_data/", "./Labels.json", 12, (32, 32, 3), False, False, False)
-for i in range(image_generator.batches_per_epoch):
-    image_generator.next()
-image_generator.show()
+spectrum = Spectrum(255)
+spectrum.draw()
+spectrum.show()
+# image_generator = ImageGenerator(
+#     "./exercise_data/", "./Labels.json", 12, (32, 32, 3), False, False, False)
+# for i in range(image_generator.batches_per_epoch):
+#     image_generator.next()
+# image_generator.show()
