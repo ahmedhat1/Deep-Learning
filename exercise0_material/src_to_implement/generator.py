@@ -1,14 +1,14 @@
-import os.path
 import json
-import scipy.misc
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.random import default_rng
-from copy import deepcopy
 from numpy import random
 from skimage import transform as tf
-# In this exercise task you will implement an image generator. Generator objects in python are defined as having a next function.
-# This next function returns the next generated object. In our case it returns the input of a neural network each time it gets called.
+
+# In this exercise task you will implement an image generator. Generator objects in python are defined as having a next
+# function.
+# This next function returns the next generated object. In our case it returns the input of a neural network each time
+# it gets called.
 # This input consists of a batch of images and its corresponding labels.
 
 
@@ -40,7 +40,6 @@ class ImageGenerator:
         self.labels_copy = [int(i[0]) for i in list(self.labels.items())]
         self.batches_per_epoch = (len(self.labels)//self.batch_size + 1) if (
             len(self.labels) % self.batch_size) != 0 else len(self.labels)//self.batch_size
-        x = 6
         self.seed = 1234
         self.list_of_batches = []
 
@@ -55,27 +54,23 @@ class ImageGenerator:
         if not self.shuffle:
             np.random.seed(self.seed)
         if len(self.labels_copy) > (len(self.labels) % self.batch_size):
-            images_indecies = random.choice(
+            images_indices = random.choice(
                 self.labels_copy, self.batch_size, replace=False)
-            self.list_of_batches.append(images_indecies)
+            self.list_of_batches.append(images_indices)
         else:
-            images_indecies = random.choice(
+            images_indices = random.choice(
                 self.labels_copy, len(self.labels_copy), replace=False)
             self.labels_copy = [int(i[0]) for i in list(self.labels.items())]
             remaining = self.list_of_batches[0][:(
-                self.batch_size - len(images_indecies))]
-            # self.labels_copy = [int(i[0])
-            #                     for i in list(self.labels.items())]
-            # remaining = random.choice(
-            #     self.labels_copy, self.batch_size - len(images_indecies), replace=False)
-            images_indecies = list(images_indecies)
+                self.batch_size - len(images_indices))]
+            images_indices = list(images_indices)
             remaining = list(remaining)
-            images_indecies.extend(remaining)
-            images_indecies = np.array(images_indecies)
-        print(images_indecies)
+            images_indices.extend(remaining)
+            images_indices = np.array(images_indices)
+        #print(images_indices)
         images = []
         labels = []
-        for image_index in images_indecies:
+        for image_index in images_indices:
             image = np.load(f"{self.file_path}/{image_index}.npy")
             if image.shape != self.image_size:
                 image = tf.resize(image, output_shape=self.image_size)

@@ -1,13 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# create a 8x8 array with alternating ones and zeros
-checkerboard = np.array([[0, 1] * 4, [1, 0] * 4] *4)
+x = [1, 3, 5, 7]
+y = [2, 4, 6, 8]
+xx, yy = np.meshgrid(x, y)
 
-# use np.tile to repeat the array horizontally and vertically to get a 256x256 checkerboard
-#checkerboard = np.tile(checkerboard, (32, 32))
-
-# show the checkerboard using matplotlib
-print(checkerboard)
-plt.imshow(checkerboard, cmap='gray')
-plt.show()
+print("xx :")
+print(xx)
+print("----")
+print("yy : ")
+print(yy)
