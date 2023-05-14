@@ -1,3 +1,5 @@
 class BaseLayer:
-    __init__(self):
-    
+    def __init__(self):
+        self.trainable=False
+        self.weights = None 
+

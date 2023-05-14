@@ -1,8 +1,9 @@
-import matplotlib.pyplot as plt
-from pattern import Checker, Circle, Spectrum
-from generator import ImageGenerator
+# import matplotlib.pyplot as plt
+# from pattern import Checker, Circle, Spectrum
+# from generator import ImageGenerator
+import numpy as np
 
-
+print(np.random.rand(0,100))
 # Create an instance of Checker with resolution=256 and tile_size=32
 # checker = Checker(250, 25)
 #
