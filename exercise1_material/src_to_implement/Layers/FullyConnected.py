@@ -23,12 +23,12 @@ class FullyConnected(BaseLayer):
         error_tesnor_prev = np.dot(error_tensor, self.weights[:-1].T)
         # print("weights", self.weights[:-1].shape)
         # print("self.__gradient_weights", self.__gradient_weights.shape)
-        self.__gradient_weights = np.concatenate((np.dot( error_tensor.T, self.input_tensor) , error_tensor),axis = 0)
+        self.__gradient_weights = np.concatenate((np.dot( error_tensor.T, self.input_tensor).T , np.expand_dims(np.sum(error_tensor, axis=0), axis=0)),axis = 0)
         if self.optimizer:
             # bias = self.weights[-1]
             # print("weights", self.weights[:-1].shape)
             # print("self.__gradient_weights", self.__gradient_weights.shape)
-            self.weights = self.__optimizer.calculate_update(self.weights, self.__gradient_weights.T)
+            self.weights = self.__optimizer.calculate_update(self.weights, self.__gradient_weights)
             # new_bias = self.__optimizer.calculate_update(self.weights[-1], error_tensor)
             # self.weights = np.concatenate((self.weights, np.expand_dims(bias,axis=0)))
             # self.bias = self.__optimizer.calculate_update(self.bias, self.__gradient_weights)
