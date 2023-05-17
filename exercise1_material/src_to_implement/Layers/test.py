@@ -1,9 +1,10 @@
 import numpy as np
-weights = np.ones((3,3))
-input_tensor = np.ones((3,3,3))  * 2
+weights = np.ones((6))
+input_tensor = np.ones((3,4))
  
 # for i in range(input_tensor.shape[0]):
 #     input_tensor[i,:] = input_tensor[i,:] * weights
-print("weights " , weights)
-print("input tensor " , input_tensor)
-print(np.dot(input_tensor,weights))
+exp_tensor = np.exp(weights)
+den = np.sum(exp_tensor, axis = 0)
+den = np.repeat(np.expand_dims(den,axis=1),exp_tensor.shape[0],axis=1)
+output_tensor = np.divide(exp_tensor, den)
