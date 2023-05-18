@@ -23,8 +23,10 @@ class NeuralNetwork():
             self.error_tensor = layer.backward(self.error_tensor)
 
     def append_layer(self,layer):
-        if layer.trainable:
-            layer.__set_optimizer =copy.deepcopy(self.optimizer)
+        if layer.trainable:            
+            layer.set_optimizer(copy.deepcopy(self.optimizer))
+        else:
+            layer.set_optimizer = None
         self.layers.append(layer)
 
     def train(self,iterations):

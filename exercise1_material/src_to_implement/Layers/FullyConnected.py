@@ -35,14 +35,14 @@ class FullyConnected(BaseLayer):
             # self.bias = self.__optimizer.calculate_update(self.bias, self.__gradient_weights)
         return error_tesnor_prev
 
-    def __get_optimizer(self):
+    def get_optimizer(self):
         return self.__optimizer
-    def __set_optimizer(self, optim):
+    def set_optimizer(self, optim):
         self.__optimizer = optim
 
     optimizer = property(
-        fget = __get_optimizer,
-        fset = __set_optimizer,
+        fget = get_optimizer,
+        fset = set_optimizer,
         doc = "optimizer property"
     )
 
@@ -52,3 +52,4 @@ class FullyConnected(BaseLayer):
         fget = __get_gradient_weights,
         doc = "gradient weights"
     )
+    
