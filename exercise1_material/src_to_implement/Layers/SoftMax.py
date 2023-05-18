@@ -10,16 +10,17 @@ class SoftMax(BaseLayer):
             input_tensor = np.subtract(input_tensor, np.max(input_tensor))
         exp_tensor = np.exp(input_tensor)
         try:
-            exp_tensor.shape[1]
+            #exp_tensor.shape[1]
             den = np.sum(exp_tensor, axis = 0)
             den = np.repeat(np.expand_dims(den,axis=1),exp_tensor.shape[0],axis=1)
-            self.output_tensor = exp_tensor/den.T
-            print("outtesnro", np.sum(self.output_tensor))
+            self.output_tensor = np.divide(exp_tensor,den.T)
             return self.output_tensor
         except:
-            print("outtesnro", np.sum(self.output_tensor))
-
-            return exp_tensor/np.sum(exp_tensor)
+            self.output_tensor = np.divide(exp_tensor,np.sum(exp_tensor))
+            #print("out_tensor", np.sum(self.output_tensor))
+            return self.output_tensor
         # output = exp_tesnor[:,]
     def backward(self, error_tensor):
         pass
+        #return error_tensor_prev
+
