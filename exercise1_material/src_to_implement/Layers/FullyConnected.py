@@ -9,6 +9,8 @@ class FullyConnected(BaseLayer):
         # self.bias = np.random.uniform(0, 1, size=output_size)
         self.__optimizer = optimizer
         self.__gradient_weights = gradient_weights
+    
+    
 
     def forward(self, input_tensor):
         self.input_tensor = input_tensor

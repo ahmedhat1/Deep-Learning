@@ -10,7 +10,7 @@ class FullyConnected(BaseLayer):
         self.__optimizer = optimizer
         self.__gradient_weights = gradient_weights
     
-    def initialize(self, weights_initializer, bias_initializer):
+    def initialize(self,weights_initializer, bias_initializer):
         weights = weights_initializer.initialize(np.shape(self.weights[:-1, :]), np.shape(self.weights[:-1, :])[0],
                                                  np.shape(self.weights[:-1, :])[1])
         bias = np.expand_dims(self.weights[-1, :], axis=0)
