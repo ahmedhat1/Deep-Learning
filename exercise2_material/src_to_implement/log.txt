@@ -4,3 +4,5 @@ On the Iris dataset, we achieve an accuracy of: 96.0%
 On the Iris dataset, we achieve an accuracy of: 98.0%
 On the Iris dataset, we achieve an accuracy of: 96.0%
 On the Iris dataset, we achieve an accuracy of: 94.0%
+On the Iris dataset, we achieve an accuracy of: 96.0%
+On the Iris dataset, we achieve an accuracy of: 96.0%
