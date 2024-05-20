@@ -26,14 +26,34 @@ class Conv(BaseLayer):
             self.img_2d = True
             self.n = self.convolution_shape[2]
             self.weights = np.random.uniform(0, 1, ((self.num_kernels, self.input_channel_num, self.m, self.n)))
-            self.bias = np.random.uniform(0, 1, (self.num_kernels))
         else:
             self.weights = np.random.uniform(0, 1, ((self.num_kernels, self.input_channel_num, self.m)))
-            self.bias = np.random.uniform(0, 1, (self.num_kernels))
+        self.bias = np.random.uniform(0, 1, (self.num_kernels))
+    
+    def initialize(self, weights_initializer, bias_initializer):
+
+        if (self.img_2d == True):
+            self.fan_in = self.input_channel_num * self.m * self.n
+            self.fan_out = self.num_kernels * self.m * self.n
+        else:
+            self.fan_in = self.input_channel_num * self.m
+            self.fan_out = self.num_kernels * self.m
+
+        self.weights = weights_initializer.initialize(self.weights.shape, self.fan_in, self.fan_out)
+        self.bias = bias_initializer.initialize(self.bias.shape, self.fan_in, self.fan_out)
+
     
     def forward(self, input_tensor):
-        pass
-    
+        #– The input layout for 1D is defined in b, c, y order, for 2D in b, c, y, x order. Here,
+        #b stands for the batch, c represents the channels and x, y represent the spatial dimensions
+        self.input_tensor = input_tensor
+        self.b = input_tensor[0]
+        self.c = input_tensor[1]
+        self.y = input_tensor[2]
+        if self.img_2d:
+            self.x = input_tensor[3]
+        #self.output =
+
     def backward(self, error_tensor):
         pass
 

@@ -1,17 +1,21 @@
-# import matplotlib.pyplot as plt
-# from pattern import Checker, Circle, Spectrum
+import matplotlib.pyplot as plt
+from pattern import Checker, Circle, Spectrum
 # from generator import ImageGenerator
 import numpy as np
 
-print(np.random.rand(0,100))
+x = np.array([[5, 5,5],[5,5,5],[5,5,5],[5,5,5]])
+y = np.expand_dims(x, axis=0)
+print(y)
+print(y.shape)
+#print(np.random.rand(0,100))
 # Create an instance of Checker with resolution=256 and tile_size=32
-# checker = Checker(250, 25)
+checker = Checker(250, 25)
 #
 # # Generate the checkerboard pattern
-# checker.draw()
+#checker.draw()
 #
 # # Display the checkerboard pattern
-# checker.show()
+#checker.show()
 
 # circle = Circle(1024, 200, (512, 256))
 # circle.draw()
